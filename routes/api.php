@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -25,4 +26,5 @@ Route::group(['prefix' => 'users', 'middleware' => 'CORS'], function ($router) {
 });
 Route::get('/me', [UserController::class, 'me'])->name('me.user');
 Route::post('/oauth/logout', [AccessTokenController::class, 'logout'])->middleware('auth:api')->name('logout');
-Route::resource('products',ProductController::class);
+Route::resource('/products',ProductController::class);
+Route::get('/category', [CategoryController::class,'index']);

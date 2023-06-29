@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -34,7 +35,7 @@ class ProductController extends Controller
             return $product;
         });
 
-        return $products;
+        return ProductResource::collection($products) ;
     }
 
     /**
@@ -65,7 +66,8 @@ class ProductController extends Controller
 
                 foreach ($request->images as $image) {
                     if (isset($image)) {
-                        $relativePath = $this->saveImage($image);
+                        $relativePath =$this->saveImage($image);
+//                        dd($relativePath,"ABSOLUTE");
                         $imageNames[] = $relativePath;
                     }
                 }
@@ -92,11 +94,7 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        $product = Product::find($id);
 
-        return Inertia::render('SingleProduct', [
-            'product' => $product,
-        ]);
     }
 
     /**
@@ -161,6 +159,7 @@ class ProductController extends Controller
         $dir = 'images/';
         $file = Str::random() . '.' . $type;
         $absolutePath = public_path($dir);
+
         $relativePath = $dir . $file;
         if (!File::exists($absolutePath)) {
             File::makeDirectory($absolutePath, 0755, true);
