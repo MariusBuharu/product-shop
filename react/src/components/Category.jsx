@@ -1,4 +1,7 @@
-export default function Category({image1,image2,title,description}){
+
+
+export default function Category({image1,image2,title}){
+
     return(
         <a href="#" className="group block">
             <div className="relative h-[350px] sm:h-[450px]">
@@ -22,9 +25,7 @@ export default function Category({image1,image2,title,description}){
                     {title}
                 </h3>
 
-                <p className="mt-1.5 max-w-[40ch] text-xs text-gray-500">
-                    {description}
-                </p>
+
             </div>
         </a>
     )

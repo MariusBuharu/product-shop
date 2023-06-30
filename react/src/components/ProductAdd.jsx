@@ -1,6 +1,8 @@
 import {useState} from "react";
 import axiosClient from "../axios.js";
-import {PhotoIcon} from "@heroicons/react/20/solid/index.js";
+import {ArrowLongRightIcon, PhotoIcon} from "@heroicons/react/20/solid/index.js";
+import {Button} from "@material-tailwind/react";
+import {PlusCircleIcon} from "@heroicons/react/24/outline/index.js";
 
 export default function ProductAdd(){
     // const [loading, setLoading] = useState(false);
@@ -293,7 +295,9 @@ export default function ProductAdd(){
                             </p>
                         </div>
                     </div>
-                    <button>Save</button>
+                    <Button type='submit' variant="gradient" className="flex items-center gap-2">
+                        Add Product <PlusCircleIcon strokeWidth={2} className="h-5 w-5" />
+                    </Button>
                 </div>
 
             </div>

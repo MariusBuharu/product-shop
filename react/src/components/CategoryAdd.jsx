@@ -1,8 +1,11 @@
 import {useState} from "react";
 import axiosClient from "../axios.js";
 import {PhotoIcon} from "@heroicons/react/20/solid/index.js";
+import {Button} from "@material-tailwind/react";
+import {PlusCircleIcon} from "@heroicons/react/24/outline/index.js";
 
 export default function CategoryAdd(){
+    const [loading,setLoading]=useState(false);
     const [category,setCategory]= useState({
         name: "",
         slug: "",
@@ -18,7 +21,7 @@ export default function CategoryAdd(){
         imagesArray.forEach((file) => {
             const reader = new FileReader();
             reader.onload = () => {
-                setProduct((prevState) => ({
+                setCategory((prevState) => ({
                     ...prevState,
                     images: [...prevState.images, file],
                     images_url: [...prevState.images_url, reader.result],
@@ -33,7 +36,7 @@ export default function CategoryAdd(){
     const onSubmit = (ev) => {
         ev.preventDefault();
 
-        const payload = { ...product,category_id: product.category  };
+        const payload = { ...category };
         if (Array.isArray(payload.images) && payload.images.length > 0) {
             payload.images = payload.images_url;
         }
@@ -41,10 +44,17 @@ export default function CategoryAdd(){
         console.log(payload.images);
 
         let res = null;
-        res = axiosClient.post('/products', payload);
+        res = axiosClient.post('/category', payload);
         console.log(payload, 'Payload');
         res
             .then((res) => {
+                setCategory({
+                    name: "",
+                    slug: "",
+                    status: false,
+                    images: [],
+                    images_url: [],
+                });
                 console.log(res);
             })
             .catch((err) => {
@@ -73,7 +83,7 @@ export default function CategoryAdd(){
                             Photo
                         </label>
                         <div className="mt-1 flex items-center">
-                            {product.images_url.map((imageUrl, index) => (
+                            {category.images_url.map((imageUrl, index) => (
                                 <img
                                     key={index}
                                     src={imageUrl}
@@ -81,7 +91,7 @@ export default function CategoryAdd(){
                                     className="w-32 h-32 object-cover mr-2"
                                 />
                             ))}
-                            {product.images_url.length === 0 && (
+                            {category.images_url.length === 0 && (
                                 <span className="flex justify-center items-center text-gray-400 h-12 w-12 overflow-hidden rounded-full bg-gray-100">
                                            <PhotoIcon className="w-8 h-8" />
                                            </span>
@@ -125,7 +135,7 @@ export default function CategoryAdd(){
                             htmlFor="slug"
                             className="block text-sm font-medium text-gray-700"
                         >
-                            Product Slug
+                            Category Slug
                         </label>
                         <input
                             type="text"
@@ -135,7 +145,7 @@ export default function CategoryAdd(){
                             onChange={(ev) =>
                                 setCategory({...category, slug: ev.target.value})
                             }
-                            placeholder="Product Slug"
+                            placeholder="Category Slug"
                             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                         />
                     </div>
@@ -170,7 +180,9 @@ export default function CategoryAdd(){
                             </p>
                         </div>
                     </div>
-                    <button>Save</button>
+                <Button type='submit' variant="gradient" className="flex items-center gap-2 mt-4 mb-4">
+                    Add Product <PlusCircleIcon strokeWidth={2} className="h-5 w-5" />
+                </Button>
                 </div>
         </form>
     )

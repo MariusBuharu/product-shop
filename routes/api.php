@@ -27,4 +27,4 @@ Route::group(['prefix' => 'users', 'middleware' => 'CORS'], function ($router) {
 Route::get('/me', [UserController::class, 'me'])->name('me.user');
 Route::post('/oauth/logout', [AccessTokenController::class, 'logout'])->middleware('auth:api')->name('logout');
 Route::resource('/products',ProductController::class);
-Route::get('/category', [CategoryController::class,'index']);
+Route::resource('/category', CategoryController::class);

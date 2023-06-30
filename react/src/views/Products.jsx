@@ -1,12 +1,16 @@
 import {useEffect, useState} from "react";
 import axiosClient from "../axios.js";
+import CategoryPlaceholder from "../placeholders/CategoryPlaceholder.jsx";
 
 export default  function Products(){
     const [products, setProducts] = useState([]);
+    const[loading,setLoading]=useState(false);
 
 
 
     const fetchProducts = () => {
+        setLoading(true);
+        console.log(loading,"LOADING ######################################")
         axiosClient.get("/products").then((response) => {
             const baseUrl = "http://localhost:8000/"; // Replace with your actual base URL
             const productsWithAbsoluteUrls = response.data.data.map((product) => ({
@@ -16,6 +20,7 @@ export default  function Products(){
                 ),
             }));
             setProducts(productsWithAbsoluteUrls);
+            setLoading(false);
         });
     };
 
@@ -275,79 +280,47 @@ export default  function Products(){
                         </select>
                     </div>
                 </div>
-                {/*<ul>*/}
-                {/*    {products.length > 0 ? (*/}
-                {/*        products.map((product) => (*/}
-                {/*            <li key={product.id}>*/}
-                {/*                <h3 className="text-xl text-red-700">{product.name}</h3>*/}
-                {/*                <p>{product.description}</p>*/}
-                {/*                <div>*/}
-                {/*                    {product.image_url &&*/}
-                {/*                        product.image_url.map((image, imgIndex) => (*/}
-                {/*                            <img*/}
-                {/*                                key={imgIndex}*/}
-                {/*                                src={image}*/}
-                {/*                                alt={`Product Image ${imgIndex}`}*/}
-                {/*                            />*/}
-                {/*                        ))}*/}
-                {/*                </div>*/}
-                {/*                /!* Render other product details *!/*/}
-                {/*            </li>*/}
-                {/*        ))*/}
-                {/*    ) : (*/}
-                {/*        <li>No products available</li>*/}
-                {/*    )}*/}
-                {/*</ul>*/}
-                <ul className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                    {products.length > 0 ? (
+
+                <ul className="mt-4 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                    {loading ? (
+                        <>
+                            <CategoryPlaceholder />
+                            <CategoryPlaceholder />
+                            <CategoryPlaceholder />
+                        </>
+
+                        )
+                    : (
                         products.map((product) => (
                             <li key={product.id}>
-                                <a href="#" className="group block overflow-hidden">
-                                    {product.image_url &&
-                                        product.image_url.map((image, imgIndex) => (
-                                            imgIndex ===0 ?
-                                            <img
-                                                key={imgIndex}
-                                                src={image}
-                                                alt={`Product Image ${imgIndex}`}
-                                                className="h-[350px] w-full object-cover transition duration-500 group-hover:scale-105 sm:h-[450px]"
-                                            />:''
-                                        ))}
-                                    <div className="relative bg-white pt-3">
-                                        <h3
-                                            className="text-xs text-gray-700 group-hover:underline group-hover:underline-offset-4"
-                                        >
-                                            {product.name}
-                                        </h3>
+                        <a href="#" className="group block overflow-hidden">
+                            {product.image_url &&
+                                product.image_url.map((image, imgIndex) => (
+                                    imgIndex === 0 ?
+                                        <img
+                                            key={imgIndex}
+                                            src={image}
+                                            alt={`Product Image ${imgIndex}`}
+                                            className="h-[350px] w-full object-cover transition duration-500 group-hover:scale-105 sm:h-[450px]"
+                                        /> : ''
+                                ))}
+                            <div className="relative bg-white pt-3">
+                                <h3
+                                    className="text-xs text-gray-700 group-hover:underline group-hover:underline-offset-4"
+                                >
+                                    {product.name}
+                                </h3>
 
-                                        <p className="mt-2">
-                                            <span className="sr-only"> Regular Price </span>
+                                <p className="mt-2">
+                                    <span className="sr-only"> Regular Price </span>
 
-                                            <span className="tracking-wider text-gray-900">{product.price} GBP </span>
-                                        </p>
-                                    </div>
-                                </a>
-                            </li>
-                            // <li key={product.id}>
-                            //     <h3 className="text-xl text-red-700">{product.name}</h3>
-                            //     <p>{product.description}</p>
-                            //     <div>
-                            //         {product.image_url &&
-                            //             product.image_url.map((image, imgIndex) => (
-                            //                 <img
-                            //                     key={imgIndex}
-                            //                     src={image}
-                            //                     alt={`Product Image ${imgIndex}`}
-                            //                 />
-                            //             ))}
-                            //     </div>
-                            //     {/* Render other product details */}
-                            // </li>
+                                    <span className="tracking-wider text-gray-900">{product.price} GBP </span>
+                                </p>
+                            </div>
+                        </a>
+                    </li>
                         ))
-                    ) : (
-                        <li>No products available</li>
                     )}
-
 
                 </ul>
             </div>
