@@ -154,6 +154,14 @@ class CategoryController extends Controller
         return $relativePath;
     }
 
+    public function showProducts($categoryId): \Illuminate\Http\JsonResponse
+    {
+        $category = Category::find($categoryId);
+        $products = $category->products;
+        return response()->json(['data' => $products]);
+    }
+
+
 
     public function resizeExistingImages()
     {

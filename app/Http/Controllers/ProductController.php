@@ -15,28 +15,46 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+//    public function index()
+//    {
+//
+//
+//        $products=Product::select(
+//            'id',
+//            'name',
+//            'slug',
+//            'status',
+//            'description',
+//            'summary',
+//            'price',
+//            'discounted_price',
+//            'images',
+//            'category_id',
+//            'brand_id',
+//            'stock'
+//        )->get();
+//        $products = $products->map(function ($product) {
+//            $product->images = json_decode($product->images);
+//            return $product;
+//        });
+//
+//        return ProductResource::collection($products) ;
+//    }
+    public function index($category_id)
     {
-        $products=Product::select(
-            'name',
-            'slug',
-            'status',
-            'description',
-            'summary',
-            'price',
-            'discounted_price',
-            'images',
-            'category_id',
-            'brand_id',
-            'stock'
-        )->get();
+//        $categoryId = basename($request->getPathInfo());
+//        dd($category_id,"request ID");
+
+        $products = Product::where('category_id', $category_id)->get();
+
         $products = $products->map(function ($product) {
             $product->images = json_decode($product->images);
             return $product;
         });
 
-        return ProductResource::collection($products) ;
+        return ProductResource::collection($products);
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -88,6 +106,13 @@ class ProductController extends Controller
             ], 500);
         }
     }
+
+    public function indexByCategory(Request $request, $categoryId): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+    {
+        $products = Product::where('category_id', $categoryId)->get();
+        return ProductResource::collection($products);
+    }
+
 
     /**
      * Display the specified resource.

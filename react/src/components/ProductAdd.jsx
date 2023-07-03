@@ -1,11 +1,12 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import axiosClient from "../axios.js";
-import {ArrowLongRightIcon, PhotoIcon} from "@heroicons/react/20/solid/index.js";
+import { PhotoIcon} from "@heroicons/react/20/solid/index.js";
 import {Button} from "@material-tailwind/react";
 import {PlusCircleIcon} from "@heroicons/react/24/outline/index.js";
 
 export default function ProductAdd(){
     // const [loading, setLoading] = useState(false);
+    const [categories, setCategories] = useState([]);
     const [product,setProduct]= useState({
         name: "",
         slug: "",
@@ -65,7 +66,20 @@ export default function ProductAdd(){
     };
 
 
-
+    useEffect(() => {
+        // setLoading(true);
+        axiosClient
+            .get("/categories")
+            .then((response) => {
+                console.log(response,"CATEGORY RESPONSE");
+                setCategories(response.data.data);
+                // setLoading(false);
+            })
+            .catch((error) => {
+                // setLoading(false);
+                console.error("Error fetching categories:", error);
+            });
+    }, []);
     const onDelete = () => {
 
     }
@@ -160,27 +174,18 @@ export default function ProductAdd(){
                                 name="category"
                                 value={product.category}
                                 onChange={(ev) => {
-                                    let catId;
-                                    if(ev.target.value ==='Vegetables'){
-                                        catId=1;
-                                    }else  if(ev.target.value ==='Fruits') {
-                                        catId=2;
-                                    }else  if(ev.target.value ==='Exotic') {
-                                        catId=3;
-                                    }else {
-                                        catId=4;
-                                    }
-                                    setProduct({...product, category: catId}
-
-                                    )
-                                }
-                                }
+                                    const categoryId = parseInt(ev.target.value);
+                                    setProduct({ ...product, category: categoryId });
+                                }}
                                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
-                            >
-                                <option value="Fruits">Fruits</option>
-                                <option value="Vegetables">Vegetables</option>
-                                <option value="Exotic">Exotic</option>
-                                <option value="Spices">Spices</option>
+                            >{
+                                categories.map((category) => (
+                                        <option key={category.id} value={category.id}>
+                                            {category.name}
+                                        </option>
+                                    ))
+                                }
+
                             </select>
                         </div>
                     </div>

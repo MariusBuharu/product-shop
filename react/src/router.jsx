@@ -8,6 +8,7 @@ import Products from "./views/Products.jsx";
 import ProductView from "./views/ProductView.jsx";
 import Product from "./views/Product.jsx";
 import Categories from "./views/Categories.jsx";
+import Category from "./components/Category.jsx";
 
 const router=createBrowserRouter([
     {
@@ -31,12 +32,16 @@ const router=createBrowserRouter([
                 element: <ProductView/>
             },
             {
-                path: '/products/:id',
+                path: '/categories/:category_id/products/:product_id',
                 element: <Product/>
             },
             {
                 path:'/categories',
                 element:<Categories />
+            },
+            {
+                path: "/categories/:category_id/products",
+                element: <Products />,
             },
         ]
     },

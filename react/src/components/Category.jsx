@@ -1,9 +1,10 @@
+import {Link} from "react-router-dom";
 
 
-export default function Category({image1,image2,title}){
+export default function Category({image1,image2,title,categoryId}){
 
     return(
-        <a href="#" className="group block">
+        <Link to={`/categories/${categoryId}/products`} className="group block">
             <div className="relative h-[350px] sm:h-[450px]">
                 <img
                     src={image1}
@@ -19,14 +20,10 @@ export default function Category({image1,image2,title}){
             </div>
 
             <div className="mt-3">
-                <h3
-                    className="text-xl text-gray-700 font-semibold uppercase group-hover:underline group-hover:underline-offset-4"
-                >
+                <h3 className="text-xl text-gray-700 font-semibold uppercase group-hover:underline group-hover:underline-offset-4">
                     {title}
                 </h3>
-
-
             </div>
-        </a>
+        </Link>
     )
 }

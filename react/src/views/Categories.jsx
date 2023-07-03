@@ -2,14 +2,13 @@ import Category from "../components/Category.jsx";
 import {useEffect, useState} from "react";
 import axiosClient from "../axios.js";
 import {PacmanLoader} from "react-spinners";
-import CategoryPlaceholder from "../placeholders/CategoryPlaceholder.jsx";
 
 export default function Categories(){
     const [loading,setLoading]=useState(false);
     const [category,setCategory]=useState([])
     const getCategories = () => {
 
-        axiosClient.get('/category').then(response => {
+        axiosClient.get('/categories').then(response => {
             const baseUrl = "http://localhost:8000/"; // Replace with your actual base URL
             const categories = response.data.data.map((category)=>
                 ({...category,
@@ -45,7 +44,7 @@ export default function Categories(){
             {!loading && <div className="grid grid-cols-1  md:grid-cols-4 gap-10 ml-10 mr-10 mb-10 mt-20">
                 {category.map((entry) => (
                     <Category  key={entry.id} image1={entry.image_url[0]} image2={entry.image_url[1]}
-                              title={entry.name}/>
+                              title={entry.name} categoryId={entry.id}/>
                 ))}
             </div>}
 

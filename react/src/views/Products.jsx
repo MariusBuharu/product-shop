@@ -1,8 +1,12 @@
 import {useEffect, useState} from "react";
 import axiosClient from "../axios.js";
 import CategoryPlaceholder from "../placeholders/CategoryPlaceholder.jsx";
+import {useParams} from "react-router-dom";
 
 export default  function Products(){
+    const { category_id } = useParams();
+    console.log(useParams(),"PARAMS");
+    console.log(category_id,"CATEGORY ***********************")
     const [products, setProducts] = useState([]);
     const[loading,setLoading]=useState(false);
 
@@ -11,7 +15,8 @@ export default  function Products(){
     const fetchProducts = () => {
         setLoading(true);
         console.log(loading,"LOADING ######################################")
-        axiosClient.get("/products").then((response) => {
+        console.log(category_id,"Category ID ######################################")
+        axiosClient.get(`/categories/${category_id}/products`).then((response) => {
             const baseUrl = "http://localhost:8000/"; // Replace with your actual base URL
             const productsWithAbsoluteUrls = response.data.data.map((product) => ({
                 ...product,
@@ -19,6 +24,7 @@ export default  function Products(){
                     baseUrl + relativeUrl
                 ),
             }));
+            console.log(productsWithAbsoluteUrls,"PRODUCTSABSOLUTE")
             setProducts(productsWithAbsoluteUrls);
             setLoading(false);
         });
@@ -26,7 +32,7 @@ export default  function Products(){
 
     useEffect(() => {
         fetchProducts();
-    }, []);
+    }, [category_id]);
     return(
         <section className='z-0 '>
 

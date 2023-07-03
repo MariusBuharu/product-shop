@@ -27,4 +27,10 @@ Route::group(['prefix' => 'users', 'middleware' => 'CORS'], function ($router) {
 Route::get('/me', [UserController::class, 'me'])->name('me.user');
 Route::post('/oauth/logout', [AccessTokenController::class, 'logout'])->middleware('auth:api')->name('logout');
 Route::resource('/products',ProductController::class);
-Route::resource('/category', CategoryController::class);
+Route::resource('/categories', CategoryController::class);
+Route::resource('/categories/{category_id}/products', ProductController::class);
+//Route::get('/categories/{category}/products', [ProductController::class, 'index']);
+//Route::post('/categories/{category}/products', [ProductController::class, 'store']);
+//Route::get('/categories/{category}/products/{product}', [ProductController::class, 'show']);
+//Route::put('/categories/{category}/products/{product}', [ProductController::class, 'update']);
+//Route::delete('/categories/{category}/products/{product}', [ProductController::class, 'destroy']);
